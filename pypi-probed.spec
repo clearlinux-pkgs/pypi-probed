@@ -4,13 +4,14 @@
 #
 Name     : pypi-probed
 Version  : 0.0.7
-Release  : 1
+Release  : 2
 URL      : https://files.pythonhosted.org/packages/03/d6/81c7918c83ff21ed65ae59d25bab31ec9755272a2c55182140999dbc7ef8/probed-0.0.7.tar.gz
 Source0  : https://files.pythonhosted.org/packages/03/d6/81c7918c83ff21ed65ae59d25bab31ec9755272a2c55182140999dbc7ef8/probed-0.0.7.tar.gz
 Summary  : Probed collection
 Group    : Development/Tools
 License  : MIT
 Requires: pypi-probed-bin = %{version}-%{release}
+Requires: pypi-probed-license = %{version}-%{release}
 Requires: pypi-probed-python = %{version}-%{release}
 Requires: pypi-probed-python3 = %{version}-%{release}
 BuildRequires : buildreq-distutils3
@@ -24,9 +25,18 @@ This project is part of the [Pyrustic Ecosystem](https://pyrustic.github.io).
 %package bin
 Summary: bin components for the pypi-probed package.
 Group: Binaries
+Requires: pypi-probed-license = %{version}-%{release}
 
 %description bin
 bin components for the pypi-probed package.
+
+
+%package license
+Summary: license components for the pypi-probed package.
+Group: Default
+
+%description license
+license components for the pypi-probed package.
 
 
 %package python
@@ -57,7 +67,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1639053667
+export SOURCE_DATE_EPOCH=1639073000
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -72,10 +82,15 @@ python3 -m build --wheel --skip-dependency-check --no-isolation
 %install
 export MAKEFLAGS=%{?_smp_mflags}
 rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/share/package-licenses/pypi-probed
+cp %{_builddir}/probed-0.0.7/LICENSE %{buildroot}/usr/share/package-licenses/pypi-probed/f733bb36945a3e57dbdcc2d53cb548682d6c0d57
 pip install --root=%{buildroot} --no-deps --ignore-installed dist/*.whl
 echo ----[ mark ]----
 cat %{buildroot}/usr/lib/python3*/site-packages/*/requires.txt || :
 echo ----[ mark ]----
+## Remove excluded files
+rm -f %{buildroot}*/usr/lib/python3.*/site-packages/tests/__init__.py
+rm -f %{buildroot}*/usr/lib/python3.*/site-packages/tests/__pycache__/__init__.cpython-*.pyc
 
 %files
 %defattr(-,root,root,-)
@@ -83,6 +98,10 @@ echo ----[ mark ]----
 %files bin
 %defattr(-,root,root,-)
 /usr/bin/probed
+
+%files license
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/pypi-probed/f733bb36945a3e57dbdcc2d53cb548682d6c0d57
 
 %files python
 %defattr(-,root,root,-)
