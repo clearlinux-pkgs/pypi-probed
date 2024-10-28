@@ -7,7 +7,7 @@
 #
 Name     : pypi-probed
 Version  : 0.0.11
-Release  : 16
+Release  : 17
 URL      : https://files.pythonhosted.org/packages/93/d7/44f901075cfbf3c2b637d8a6d3931281716f39f38b603e1455231a02d348/probed-0.0.11.tar.gz
 Source0  : https://files.pythonhosted.org/packages/93/d7/44f901075cfbf3c2b637d8a6d3931281716f39f38b603e1455231a02d348/probed-0.0.11.tar.gz
 Summary  : Probed collections
